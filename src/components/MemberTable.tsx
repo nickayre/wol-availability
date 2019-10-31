@@ -1,115 +1,77 @@
 import Box from '@material-ui/core/Box';
-import Portal from '@material-ui/core/Portal';
-import { makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { Interval } from 'luxon';
-import React, { Fragment, useRef } from 'react';
+import React from 'react';
 
 interface MemberTableProps {
   interval: Interval;
 }
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    position: 'relative',
-  },
-  table: {
-    tableLayout: 'fixed',
-  },
-  ticks: {
-    '& th': {
-      height: theme.spacing(0.5),
-      padding: 0,
-    },
-  },
-  tick: {
-    borderRight: `1px solid ${theme.palette.divider}`,
-  },
-  tickLabels: {
-    '& th': {
-      borderBottom: 'none',
-      height: 24,
-      position: 'relative',
-    },
-  },
-  tickLabel: {
-    bottom: 0,
-    color: theme.palette.text.secondary,
-    fontSize: 12,
-    position: 'absolute',
-    right: -24,
-    textAlign: 'center',
-    width: 48,
-  },
   date: {
-    borderRight: `1px solid ${theme.palette.divider}`,
-    textAlign: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    height: theme.spacing(8),
+    justifyContent: 'center',
+    width: theme.spacing(8),
   },
   day: {
     color: theme.palette.text.secondary,
     fontSize: 12,
   },
+  number: {
+    fontSize: 20,
+  },
   slot: {
-    borderRight: `1px solid ${theme.palette.divider}`,
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    borderLeft: `1px solid ${theme.palette.divider}`,
     cursor: 'pointer',
-    height: 64,
+    flex: 1,
   },
 }));
 
 const MemberTable: React.FC<MemberTableProps> = ({ interval }) => {
+  const theme = useTheme();
+  const largeBreakpoint = useMediaQuery(theme.breakpoints.up('lg'));
+  const mediumBreakpoint = useMediaQuery(theme.breakpoints.up('md'));
+
   // Get all partial days as whole day intervals.
   const days = Array
     .from(Array(interval.count('days')).keys())
     .map(i => interval.start.plus({ days: i }))
     .map(dt => Interval.fromDateTimes(dt.startOf('day'), dt.endOf('day')));
 
+  // We scale the granularity of hours that can be selected based on the device size.
+  let hours: number[];
+
+  if (largeBreakpoint) {
+    hours = Array.from(Array(24).keys());
+  } else if (mediumBreakpoint) {
+    hours = Array.from(Array(12).keys());
+  } else {
+    hours = Array.from(Array(4).keys());
+  }
+
   const classes = useStyles();
 
-  // We render a table to provide layout and visual, then render the events on top of that.
-  const events = useRef<HTMLDivElement>(null);
-
   return (
-    <Box className={classes.container}>
-      <Table size="small" className={classes.table}>
-        <TableHead>
-          <TableRow className={classes.tickLabels}>
-            <TableCell style={{ width: 64 }} />
-            <TableCell><span className={classes.tickLabel}>06:00</span></TableCell>
-            <TableCell><span className={classes.tickLabel}>12:00</span></TableCell>
-            <TableCell><span className={classes.tickLabel}>18:00</span></TableCell>
-            <TableCell />
-          </TableRow>
-          <TableRow className={classes.ticks}>
-            <TableCell />
-            <TableCell className={classes.tick} />
-            <TableCell className={classes.tick} />
-            <TableCell className={classes.tick} />
-            <TableCell />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {days.map(({ start }, index) => (
-            <Fragment>
-              <TableRow key={index}>
-                <TableCell className={classes.date}>
-                  <Typography className={classes.day}>{start.toFormat('EEE')}</Typography>
-                  <Typography variant="h6">{start.toFormat('d')}</Typography>
-                </TableCell>
-                <TableCell className={classes.slot}></TableCell>
-                <TableCell className={classes.slot}></TableCell>
-                <TableCell className={classes.slot}></TableCell>
-                <TableCell className={classes.slot}></TableCell>
-              </TableRow>
-            </Fragment>
-          ))}
-        </TableBody>
-      </Table>
-      <div ref={events} />
+    <Box display="flex" flexDirection="column">
+      {days.map(({ start }, index) => (
+        <Box key={index} display="flex" flexDirection="row">
+          <Box className={classes.date}>
+            <Typography className={classes.day}>{start.toFormat('EEE')}</Typography>
+            <Typography className={classes.number}>{start.toFormat('d')}</Typography>
+          </Box>
+          <Box display="flex" flex="1">
+            {hours.map(hour => (
+              <Box key={hour} flex="1" className={classes.slot}></Box>
+            ))}
+          </Box>
+        </Box>
+      ))}
     </Box>
   );
 };
