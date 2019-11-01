@@ -45,29 +45,30 @@ const MemberTable: React.FC<MemberTableProps> = ({ interval }) => {
     .map(dt => Interval.fromDateTimes(dt.startOf('day'), dt.endOf('day')));
 
   // We scale the granularity of hours that can be selected based on the device size.
-  let hours: number[];
+  let slots = 4;
 
-  if (largeBreakpoint) {
-    hours = Array.from(Array(24).keys());
-  } else if (mediumBreakpoint) {
-    hours = Array.from(Array(12).keys());
-  } else {
-    hours = Array.from(Array(4).keys());
+  const largeScreen = useMediaQuery(theme.breakpoints.up('lg'));
+  const mediumScreen = useMediaQuery(theme.breakpoints.up('md'));
+
+  if (largeScreen) {
+    slots = 24;
+  } else if (mediumScreen) {
+    slots = 8;
   }
 
   const classes = useStyles();
 
   return (
     <Box display="flex" flexDirection="column">
-      {days.map(({ start }, index) => (
+      {days.map((interval, index) => (
         <Box key={index} display="flex" flexDirection="row">
           <Box className={classes.date}>
-            <Typography className={classes.day}>{start.toFormat('EEE')}</Typography>
-            <Typography className={classes.number}>{start.toFormat('d')}</Typography>
+            <Typography className={classes.day}>{interval.start.toFormat('EEE')}</Typography>
+            <Typography className={classes.number}>{interval.start.toFormat('d')}</Typography>
           </Box>
           <Box display="flex" flex="1">
-            {hours.map(hour => (
-              <Box key={hour} flex="1" className={classes.slot}></Box>
+            {interval.splitBy({ hours: 24 / slots }).map((slot, index) => (
+              <Box key={index} flex="1" className={classes.slot}></Box>
             ))}
           </Box>
         </Box>
