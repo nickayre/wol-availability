@@ -1,14 +1,19 @@
-import MemberTable from './components/MemberTable';
-import { getWeekInterval } from './model/dates';
+import Member from './pages/Member';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { DateTime } from 'luxon';
 import React, { Fragment } from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 const App: React.FC = () => (
   <Fragment>
     <CssBaseline />
-    <MemberTable interval={getWeekInterval(DateTime.local())} />
+    <BrowserRouter>
+      <Switch>
+        <Route path="/member">
+          <Member />
+        </Route>
+      </Switch>
+    </BrowserRouter>
   </Fragment>
 );
 
