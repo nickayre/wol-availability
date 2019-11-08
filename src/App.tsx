@@ -1,20 +1,56 @@
+import { AuthConsumer, AuthProvider } from './components/AuthContext';
+import Login from './pages/Login';
+import Logout from './pages/Logout';
 import Member from './pages/Member';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
-import React, { Fragment } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+
+const AppRouter: React.FC = () => (
+  <BrowserRouter>
+    <AuthConsumer>
+      {({ loading, member }) => {
+        if (loading) {
+          return 'Loading...';
+        }
+
+        if (!member) {
+          return (
+            <Switch>
+              <Route path="/login">
+                <Login />
+              </Route>
+              <Route>
+                <Redirect to="/login" />
+              </Route>
+            </Switch>
+          );
+        }
+
+        return (
+          <Switch>
+            <Route path="/login">
+              <Redirect to="/" />
+            </Route>
+            <Route path="/logout">
+              <Logout />
+            </Route>
+            <Route path="/member">
+              <Member />
+            </Route>
+          </Switch>
+        );
+      }}
+    </AuthConsumer>
+  </BrowserRouter>
+);
 
 const App: React.FC = () => (
-  <Fragment>
+  <AuthProvider>
     <CssBaseline />
-    <BrowserRouter>
-      <Switch>
-        <Route path="/member">
-          <Member />
-        </Route>
-      </Switch>
-    </BrowserRouter>
-  </Fragment>
+    <AppRouter />
+  </AuthProvider>
 );
 
 export default App;

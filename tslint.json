@@ -4,6 +4,9 @@
     "arrow-parens": [true, "ban-single-arg-parens"],
     "interface-name": [true, "never-prefix"],
     "max-line-length": { "options": [100] },
+    "no-shadowed-variable": false,
+    "object-literal-key-quotes": false,
+    "object-literal-sort-keys": false,
     "quotemark": [true, "single", "jsx-double"]
   }
 }
