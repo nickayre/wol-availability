@@ -1,4 +1,5 @@
 import { AuthConsumer, AuthProvider } from './components/AuthContext';
+import LoggingIn from './pages/LoggingIn';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Member from './pages/Member';
@@ -12,7 +13,7 @@ const AppRouter: React.FC = () => (
     <AuthConsumer>
       {({ loading, member }) => {
         if (loading) {
-          return 'Loading...';
+          return <LoggingIn />;
         }
 
         if (!member) {
