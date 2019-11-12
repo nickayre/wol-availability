@@ -1,4 +1,5 @@
-import AppBar from '@material-ui/core/AppBar';
+import Page from '../components/Page';
+
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Fab from '@material-ui/core/Fab';
@@ -7,7 +8,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
-import MenuIcon from '@material-ui/icons/Menu';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import React from 'react';
@@ -24,17 +24,7 @@ const Member: React.FC = () => {
   const classes = useStyles();
 
   return (
-    <React.Fragment>
-      <AppBar position="static" elevation={0}>
-        <Toolbar>
-          <IconButton edge="start" color="inherit">
-            <MenuIcon />
-          </IconButton>
-          <Typography component="h1" variant="h6">
-            My Availability
-          </Typography>
-        </Toolbar>
-      </AppBar>
+    <Page title="My Availability">
       <Toolbar>
         <Button variant="outlined">
           Today
@@ -53,7 +43,7 @@ const Member: React.FC = () => {
       <Fab color="secondary" className={classes.fab}>
         <AddIcon />
       </Fab>
-    </React.Fragment>
+    </Page>
   );
 };
 
