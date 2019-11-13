@@ -1,4 +1,8 @@
+import { useAuth } from '../components/AuthContext';
+import { getNameInitials } from '../utils/display';
+
 import AppBar from '@material-ui/core/AppBar';
+import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
@@ -23,6 +27,9 @@ import { Link, LinkProps, useRouteMatch } from 'react-router-dom';
 const useStyles = makeStyles(theme => ({
   menu: {
     width: 280,
+  },
+  title: {
+    flexGrow: 1,
   },
 }));
 
@@ -79,6 +86,8 @@ const Page: React.FC<PageProps> = ({ children, title }) => {
   const openMenu = () => setOpen(true);
   const closeMenu = () => setOpen(false);
 
+  const { member } = useAuth();
+
   const classes = useStyles();
 
   return (
@@ -91,9 +100,12 @@ const Page: React.FC<PageProps> = ({ children, title }) => {
           <IconButton edge="start" color="inherit" onClick={openMenu}>
             <MenuIcon />
           </IconButton>
-          <Typography component="h1" variant="h6">
+          <Typography component="h1" variant="h6" className={classes.title}>
             {title}
           </Typography>
+          <Avatar>
+            {member ? getNameInitials(member.fullName) : ''}
+          </Avatar>
         </Toolbar>
       </AppBar>
       <Drawer open={open} onClose={closeMenu}>
@@ -102,6 +114,6 @@ const Page: React.FC<PageProps> = ({ children, title }) => {
       {children}
     </div>
   );
-}
+};
 
 export default Page;
