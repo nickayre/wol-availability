@@ -86,13 +86,13 @@ const Page: React.FC<PageProps> = ({ children, title }) => {
       <Helmet>
         {title} | WOL SES Availability
       </Helmet>
-      <AppBar position="fixed" elevation={0}>
+      <AppBar position="static" elevation={0}>
         <Toolbar>
           <IconButton edge="start" color="inherit" onClick={openMenu}>
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6">
-            My Availability
+            {title}
           </Typography>
         </Toolbar>
       </AppBar>

@@ -1,4 +1,5 @@
 import { AuthConsumer, AuthProvider } from './components/AuthContext';
+import Home from './pages/Home';
 import LoggingIn from './pages/LoggingIn';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
@@ -31,6 +32,9 @@ const AppRouter: React.FC = () => (
 
         return (
           <Switch>
+            <Route path="/" exact>
+              <Home />
+            </Route>
             <Route path="/login">
               <Redirect to="/" />
             </Route>
