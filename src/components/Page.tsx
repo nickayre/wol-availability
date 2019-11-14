@@ -20,6 +20,9 @@ const useStyles = makeStyles(theme => ({
   title: {
     flexGrow: 1,
   },
+  avatar: {
+    backgroundColor: theme.palette.primary.light,
+  },
 }));
 
 export interface PageProps {
@@ -48,7 +51,7 @@ const Page: React.FC<PageProps> = ({ children, title }) => {
             {title}
           </Typography>
           <IconButton onClick={e => setMenuAnchor(e.currentTarget)}>
-            <Avatar>
+            <Avatar className={classes.avatar}>
               {member ? getNameInitials(member.fullName) : ''}
             </Avatar>
           </IconButton>
