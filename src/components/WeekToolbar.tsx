@@ -18,16 +18,24 @@ interface WeekToolbarProps {
  * A toolbar which allows selecting a week to view.
  */
 const WeekToolbar: React.FC<WeekToolbarProps> = ({ value, onChange }) => {
-  // Get the interval for the current week.
+  // Get the interval for the selected week.
   const { start } = getWeekInterval(value);
 
-  const handleCurrent = () => onChange(DateTime.local());
+  // Get the interval for the current week.
+  const currentInterval = getWeekInterval(DateTime.local());
+  const currentActive = currentInterval.contains(start);
+
+  const handleCurrent = () => onChange(currentInterval.start);
   const handlePrevious = () => onChange(start.minus({ week: 1 }));
   const handleNext = () => onChange(start.plus({ week: 1 }));
 
   return (
     <Toolbar>
-      <Button variant="outlined" onClick={handleCurrent}>
+      <Button
+        variant="outlined"
+        disabled={currentActive}
+        onClick={handleCurrent}
+      >
         This Week
       </Button>
       <IconButton onClick={handlePrevious}>
