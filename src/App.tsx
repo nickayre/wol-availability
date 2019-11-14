@@ -6,6 +6,7 @@ import Logout from './pages/Logout';
 import Member from './pages/Member';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
@@ -51,11 +52,22 @@ const AppRouter: React.FC = () => (
   </BrowserRouter>
 );
 
-const App: React.FC = () => (
-  <AuthProvider>
-    <CssBaseline />
-    <AppRouter />
-  </AuthProvider>
-);
+const App: React.FC = () => {
+  const theme = createMuiTheme({
+    palette: {
+      primary: { main: '#37474f' },
+      secondary: { main: '#f7931d' },
+    },
+  });
+
+  return (
+    <AuthProvider>
+      <CssBaseline />
+      <ThemeProvider theme={theme}>
+        <AppRouter />
+      </ThemeProvider>
+    </AuthProvider>
+  );
+}
 
 export default App;
