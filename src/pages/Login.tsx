@@ -1,13 +1,26 @@
 import { useAuth } from '../components/AuthContext';
+import LoadingButton from '../components/LoadingButton';
 
 import { useMutation } from '@apollo/react-hooks';
-import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import Container from '@material-ui/core/Container';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import gql from 'graphql-tag';
 import React, { useState } from 'react';
+
+const useStyles = makeStyles(theme => ({
+  container: {
+    marginTop: theme.spacing(4),
+    maxWidth: 500,
+  },
+  paper: {
+    padding: theme.spacing(2),
+  },
+}));
 
 const LOGIN_MUTATION = gql`
   mutation ($memberNumber: Int!, $password: String!) {
@@ -83,23 +96,31 @@ const LoginForm: React.FC = () => {
           />
         }
       />
-      <Button
+      <LoadingButton
         type="submit"
         fullWidth
         variant="contained"
         color="primary"
         size="large"
+        loading={loading}
+        disabled={loading}
       >
-        {loading ? 'Logging in' : 'Login'}
-      </Button>
+        Login
+      </LoadingButton>
     </form>
   );
 };
 
-const Login: React.FC = () => (
-  <Container>
-    <LoginForm />
-  </Container>
-);
+const Login: React.FC = () => {
+  const classes = useStyles();
+
+  return (
+    <Container className={classes.container}>
+      <Paper className={classes.paper}>
+        <LoginForm />
+      </Paper>
+    </Container>
+  );
+};
 
 export default Login;
