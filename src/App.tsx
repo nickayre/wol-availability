@@ -4,6 +4,8 @@ import LoggingIn from './pages/LoggingIn';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Member from './pages/Member';
+import Rescue from './pages/Rescue';
+import Storm from './pages/Storm';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -44,6 +46,12 @@ const AppRouter: React.FC = () => (
             </Route>
             <Route path="/member">
               <Member />
+            </Route>
+            <Route path="/unit/storm">
+              <Storm />
+            </Route>
+            <Route path="/unit/rescue">
+              <Rescue />
             </Route>
           </Switch>
         );
