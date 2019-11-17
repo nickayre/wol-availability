@@ -9,7 +9,7 @@ import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import { DateTime } from 'luxon';
 import React from 'react';
 
-interface WeekToolbarProps {
+interface WeekBrowserProps {
   value: DateTime;
   onChange: (value: DateTime) => void;
 }
@@ -17,7 +17,7 @@ interface WeekToolbarProps {
 /**
  * A toolbar which allows selecting a week to view.
  */
-const WeekToolbar: React.FC<WeekToolbarProps> = ({ value, onChange }) => {
+const WeekBrowser: React.FC<WeekBrowserProps> = ({ value, onChange }) => {
   // Get the interval for the selected week.
   const { start } = getWeekInterval(value);
 
@@ -30,7 +30,7 @@ const WeekToolbar: React.FC<WeekToolbarProps> = ({ value, onChange }) => {
   const handleNext = () => onChange(start.plus({ week: 1 }));
 
   return (
-    <Toolbar>
+    <React.Fragment>
       <Button
         variant="outlined"
         disabled={currentActive}
@@ -47,8 +47,8 @@ const WeekToolbar: React.FC<WeekToolbarProps> = ({ value, onChange }) => {
       <Typography>
         {start.toLocaleString(DateTime.DATE_MED)}
       </Typography>
-    </Toolbar>
+    </React.Fragment>
   );
 };
 
-export default WeekToolbar;
+export default WeekBrowser;

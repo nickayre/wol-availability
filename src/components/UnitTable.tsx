@@ -1,5 +1,6 @@
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core/styles';
+import { Interval } from 'luxon';
 import React from 'react';
 
 const useStyles = makeStyles(theme => ({
@@ -22,6 +23,7 @@ export interface UnitTableMemberProps {
 }
 
 export interface UnitTableProps {
+  interval: Interval;
   members: UnitTableMemberProps[];
 }
 

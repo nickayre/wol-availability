@@ -1,12 +1,17 @@
 import Page from '../components/Page';
 import UnitTable, { UnitTableMemberProps } from '../components/UnitTable';
+import WeekBrowser from '../components/WeekBrowser';
+import { getWeekInterval } from '../model/dates';
 
 import { useQuery } from '@apollo/react-hooks';
+import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Toolbar from '@material-ui/core/Toolbar';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import gql from 'graphql-tag';
-import React from 'react';
+import { DateTime } from 'luxon';
+import React, { useState } from 'react';
 
 const MEMBERS_QUERY = gql`
   {
@@ -25,11 +30,18 @@ interface MembersData {
 }
 
 const Storm = () => {
+  const [week, setWeek] = useState(DateTime.local());
+  const interval = getWeekInterval(week);
+
   const { loading, error, data } = useQuery<MembersData>(MEMBERS_QUERY);
 
   return (
     <Page title="Storm and Support">
       <Toolbar>
+        <Button color="primary" variant="outlined" endIcon={<ArrowDropDownIcon />}>
+          Filter
+        </Button>
+        <WeekBrowser value={week} onChange={setWeek} />
       </Toolbar>
       <Divider />
       {(() => {
@@ -41,7 +53,7 @@ const Storm = () => {
           return 'Error loading members';
         }
 
-        return <UnitTable members={data.members} />;
+        return <UnitTable interval={interval} members={data.members} />;
       })()}
     </Page>
   );
