@@ -2,7 +2,6 @@ import { getWeekInterval } from '../model/dates';
 
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
@@ -36,7 +35,7 @@ const WeekBrowser: React.FC<WeekBrowserProps> = ({ value, onChange }) => {
         disabled={currentActive}
         onClick={handleCurrent}
       >
-        This Week
+        Today
       </Button>
       <IconButton onClick={handlePrevious}>
         <NavigateBeforeIcon />

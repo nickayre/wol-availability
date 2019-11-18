@@ -1,14 +1,13 @@
+import MemberFilter from '../components/MemberFilter';
 import Page from '../components/Page';
 import UnitTable, { UnitTableMemberProps } from '../components/UnitTable';
 import WeekBrowser from '../components/WeekBrowser';
 import { getWeekInterval } from '../model/dates';
 
 import { useQuery } from '@apollo/react-hooks';
-import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Toolbar from '@material-ui/core/Toolbar';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import gql from 'graphql-tag';
 import { DateTime } from 'luxon';
 import React, { useState } from 'react';
@@ -38,9 +37,7 @@ const Storm = () => {
   return (
     <Page title="Storm and Support">
       <Toolbar>
-        <Button color="primary" variant="outlined" endIcon={<ArrowDropDownIcon />}>
-          Filter
-        </Button>
+        <MemberFilter />
         <WeekBrowser value={week} onChange={setWeek} />
       </Toolbar>
       <Divider />

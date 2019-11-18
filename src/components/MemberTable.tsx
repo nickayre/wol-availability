@@ -1,3 +1,5 @@
+import { getDayIntervals } from '../model/dates';
+
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -35,13 +37,8 @@ const useStyles = makeStyles(theme => ({
 const MemberTable: React.FC<MemberTableProps> = ({ interval }) => {
   const [selected, setSelected] = useState<Interval[]>([]);
 
-  // Get all partial days as whole day intervals.
-  const days = Array
-    .from(Array(interval.count('days')).keys())
-    .map(i => interval.start.plus({ days: i }))
-    .map(dt => Interval.fromDateTimes(dt.startOf('day'), dt.endOf('day')));
-
-  // We break the day into blocks.
+  // Get all partial days as whole day intervals. We break each day into blocks.
+  const days = getDayIntervals(interval);
   const blocks = Array.from(Array(4).keys());
 
   const classes = useStyles();

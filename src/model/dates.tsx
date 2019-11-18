@@ -16,3 +16,13 @@ export function getWeekInterval(dt: DateTime): Interval {
   const end = start.plus({ weeks: 1 });
   return Interval.fromDateTimes(start, end);
 }
+
+/**
+ * Gets the day intervals within an overall interval
+ */
+export function getDayIntervals(interval: Interval): Interval[] {
+  return Array
+    .from(Array(interval.count('days')).keys())
+    .map(i => interval.start.plus({ days: i }))
+    .map(dt => Interval.fromDateTimes(dt.startOf('day'), dt.endOf('day')));
+}
