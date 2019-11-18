@@ -1,9 +1,11 @@
+import AvailabilityForm from '../components/AvailabilityForm';
 import MemberTable from '../components/MemberTable';
 import Page from '../components/Page';
 import WeekBrowser from '../components/WeekBrowser';
 import { getWeekInterval } from '../model/dates';
 
 import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
 import Fab from '@material-ui/core/Fab';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -23,6 +25,8 @@ const Member: React.FC = () => {
   const [week, setWeek] = useState(DateTime.local());
   const interval = getWeekInterval(week);
 
+  const [editing, setEditing] = useState(false);
+
   const classes = useStyles();
 
   return (
@@ -32,9 +36,12 @@ const Member: React.FC = () => {
       </Toolbar>
       <Divider />
       <MemberTable interval={interval} />
-      <Fab color="secondary" className={classes.fab}>
+      <Fab color="secondary" className={classes.fab} onClick={() => setEditing(true)}>
         <AddIcon />
       </Fab>
+      <Drawer anchor="bottom" open={editing} onClose={() => setEditing(false)}>
+        <AvailabilityForm />
+      </Drawer>
     </Page>
   );
 };
