@@ -1,5 +1,4 @@
 import React from 'react';
-import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -23,38 +22,39 @@ const Brand = (props) => (
 
 const Header = () => (
   <Navbar bg='dark' className='Header' expand='md' variant='dark'>
-    <Container>
-      <AuthConsumer>
-        {({ member }) => (member ? (
-          <React.Fragment>
-            <LinkContainer to='/' exact>
-              <Brand />
-            </LinkContainer>
-            <Navbar.Toggle />
-            <Navbar.Collapse>
-              <Nav>
-                <NavLink to='/' exact>Home</NavLink>
-                <NavLink to='/member'>Member</NavLink>
-                <NavLink to='/unit'>Unit</NavLink>
-                <NavLink to='/stats'>Statistics</NavLink>
-              </Nav>
-              <Nav className='ml-auto'>
-                <NavDropdown title={<><FaUser /> {member.fullName}</>}>
-                  <LinkContainer to='/member/me'>
-                    <NavDropdown.Item>My availability</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to='/logout'>
-                    <NavDropdown.Item>Logout</NavDropdown.Item>
-                  </LinkContainer>
-                </NavDropdown>
-              </Nav>
-            </Navbar.Collapse>
-          </React.Fragment>
-        ) : (
-          <Brand className='mx-auto' />
-        ))}
-      </AuthConsumer>
-    </Container>
+    <AuthConsumer>
+      {({ member }) => (member ? (
+        <React.Fragment>
+          <LinkContainer to='/' exact>
+            <Brand />
+          </LinkContainer>
+          <Navbar.Toggle />
+          <Navbar.Collapse>
+            <Nav>
+              <NavLink to='/' exact>Home</NavLink>
+              <NavLink to='/member'>Member</NavLink>
+              <NavDropdown title='Unit'>
+                <NavDropdown.Item href='/unit/storm'>Storm and Support</NavDropdown.Item>
+                <NavDropdown.Item href='/unit/rescue'>Rescue</NavDropdown.Item>
+              </NavDropdown>
+              <NavLink to='/stats'>Statistics</NavLink>
+            </Nav>
+            <Nav className='ml-auto'>
+              <NavDropdown title={<><FaUser /> {member.fullName}</>}>
+                <LinkContainer to='/member/me'>
+                  <NavDropdown.Item>My availability</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to='/logout'>
+                  <NavDropdown.Item>Logout</NavDropdown.Item>
+                </LinkContainer>
+              </NavDropdown>
+            </Nav>
+          </Navbar.Collapse>
+        </React.Fragment>
+      ) : (
+        <Brand className='mx-auto' />
+      ))}
+    </AuthConsumer>
   </Navbar>
 );
 
