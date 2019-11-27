@@ -1,16 +1,75 @@
+import Loading from '../components/Loading';
 import Page from '../components/Page';
 import WeekBrowser from '../components/WeekBrowser';
+import { Member } from '../model/availability';
+import { getNow, getWeekInterval } from '../model/dates';
+import { FLOOD_RESCUE, RESCUE, VERTICAL_RESCUE } from '../model/qualifications';
 
-import React from 'react';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import React, { useState } from 'react';
+import Alert from 'react-bootstrap/Alert';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import AvailabilityTable from '../components/AvailabilityTable';
+
+const MEMBERS_QUERY = gql`
+  query ($qualifications: [String!]) {
+    members(filter: { qualificationsAny: $qualifications }) {
+      fullName
+      number
+      surname
+      team
+      qualifications
+    }
+  }
+`;
+
+interface MembersData {
+  members: Member[];
+}
 
 const Rescue: React.FC = () => {
+  const [week, setWeek] = useState(getWeekInterval(getNow()));
+
+  const { loading, error, data } = useQuery<MembersData>(MEMBERS_QUERY, {
+    variables: { qualifications: RESCUE },
+  });
+
+  const TabContent: React.FC<{ qualifications: string[] }> = ({ qualifications }) => (
+    <React.Fragment>
+      <div className='toolbar'>
+        <WeekBrowser value={week} onChange={setWeek} />
+      </div>
+      {(() => {
+        if (loading) {
+          return <Loading>Loading rescue availability&hellip;</Loading>;
+        }
+
+        if (error || !data) {
+          return <Alert variant='danger' className='m-3'>Error loading rescue availability.</Alert>;
+        }
+
+        const members = data.members
+          .filter(member => member.qualifications.some(q => qualifications.includes(q)))
+          .sort((a, b) => a.surname.localeCompare(b.surname));
+
+        return (
+          <AvailabilityTable members={members} />
+        );
+      })()}
+    </React.Fragment>
+  );
+
   return (
     <Page title='Rescue'>
-      <Tabs id='rescue-tabs' defaultActiveKey='vr' className='mt-1'>
-        <Tab eventKey='vr' title='Vertical Rescue'></Tab>
-        <Tab eventKey='fr' title='Flood Rescue'></Tab>
+      <Tabs id='rescue-tabs' defaultActiveKey='vr' className='mt-1' transition={false}>
+        <Tab eventKey='vr' title='Vertical Rescue'>
+          <TabContent qualifications={VERTICAL_RESCUE} />
+        </Tab>
+        <Tab eventKey='fr' title='Flood Rescue'>
+          <TabContent qualifications={FLOOD_RESCUE} />
+        </Tab>
       </Tabs>
     </Page>
   );
