@@ -8,20 +8,34 @@
   vertical-align: top;
 }
 
-.Login {
-  margin-bottom: $spacer;
-  margin-top: $spacer;
-  max-width: 400px;
-}
-
 #logging-in {
-  background: #eee;
+  background: #f4f4f4;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100vw;
   height: 100vh;
+}
+
+#login {
+  background: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+
+  form {
+    padding: $spacer;
+    max-width: 500px;
+  }
+
+  img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .toolbar {
