@@ -14,6 +14,21 @@
   max-width: 400px;
 }
 
+#logging-in {
+  background: #eee;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.toolbar {
+  border-bottom: 1px solid $table-border-color;
+  padding: $spacer;
+}
+
 .unit-table {
   thead, tfoot {
     background: #fff;

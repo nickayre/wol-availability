@@ -5,6 +5,7 @@ import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
 import Analytics from './components/Analytics';
 import Home from './pages/Home';
+import LoggingIn from './pages/LoggingIn';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Member from './pages/Member';
@@ -16,7 +17,7 @@ const AppRoutes: React.FC = () => {
   const { loading, member } = useAuth();
 
   if (loading) {
-    return null;
+    return <LoggingIn />;
   }
 
   if (!member) {
