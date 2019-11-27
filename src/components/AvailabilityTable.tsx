@@ -8,11 +8,14 @@ export interface AvailabilityTableProps {
 
 const AvailabilityTable: React.FC<AvailabilityTableProps> = ({ members }) => {
   return (
-    <React.Fragment>
-      {members.map(member => (
-        <div key={member.number}>{member.fullName}</div>
-      ))}
-    </React.Fragment>
+    <div className='availability-table'>
+      <div className='column'>
+        <div className='cell column-heading'>Name</div>
+        {members.map(member => (
+          <div key={member.number} className='cell'>{member.fullName}</div>
+        ))}
+      </div>
+    </div>
   );
 };
 

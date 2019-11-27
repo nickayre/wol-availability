@@ -22,7 +22,7 @@ const WeekBrowser: React.FC<WeekBrowserProps> = ({ value, onChange }) => {
   const handleNext = () => onChange(getWeekInterval(start.plus({ week: 1 })));
 
   return (
-    <div className='d-flex align-items-center'>
+    <React.Fragment>
       <Button
         variant='primary'
         onClick={handleToday}
@@ -36,7 +36,7 @@ const WeekBrowser: React.FC<WeekBrowserProps> = ({ value, onChange }) => {
         <Button variant='outline-secondary' onClick={handleNext}><FaArrowRight /></Button>
       </ButtonGroup>
       <span>{value.start.toLocaleString(DateTime.DATE_MED)}</span>
-    </div>
+    </React.Fragment>
   );
 };
 

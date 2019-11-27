@@ -1,4 +1,5 @@
 import Loading from '../components/Loading';
+import MemberFilter from '../components/MemberFilter';
 import Page from '../components/Page';
 import WeekBrowser from '../components/WeekBrowser';
 import { Member } from '../model/availability';
@@ -38,9 +39,6 @@ const Rescue: React.FC = () => {
 
   const TabContent: React.FC<{ qualifications: string[] }> = ({ qualifications }) => (
     <React.Fragment>
-      <div className='toolbar'>
-        <WeekBrowser value={week} onChange={setWeek} />
-      </div>
       {(() => {
         if (loading) {
           return <Loading>Loading rescue availability&hellip;</Loading>;
@@ -55,7 +53,13 @@ const Rescue: React.FC = () => {
           .sort((a, b) => a.surname.localeCompare(b.surname));
 
         return (
-          <AvailabilityTable members={members} />
+          <React.Fragment>
+            <div className='toolbar'>
+              <MemberFilter members={members} variant='primary' className='mr-2' />
+              <WeekBrowser value={week} onChange={setWeek} />
+            </div>
+            <AvailabilityTable members={members} />
+          </React.Fragment>
         );
       })()}
     </React.Fragment>
@@ -63,7 +67,7 @@ const Rescue: React.FC = () => {
 
   return (
     <Page title='Rescue'>
-      <Tabs id='rescue-tabs' defaultActiveKey='vr' className='mt-1' transition={false}>
+      <Tabs id='rescue-tabs' defaultActiveKey='vr' transition={false} className='mt-1'>
         <Tab eventKey='vr' title='Vertical Rescue'>
           <TabContent qualifications={VERTICAL_RESCUE} />
         </Tab>

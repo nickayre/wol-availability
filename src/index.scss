@@ -39,8 +39,10 @@
 }
 
 .toolbar {
-  border-bottom: 1px solid $table-border-color;
+  display: flex;
+  align-items: center;
   padding: 0.75 * $spacer $spacer;
+  border-bottom: 1px solid $table-border-color;
 }
 
 .loading {
@@ -50,18 +52,19 @@
   align-items: center;
 }
 
-.unit-table {
-  thead, tfoot {
-    background: #fff;
+.availability-table {
+  .column {
+    display: flex;
+    flex-direction: column;
   }
-
-  .team, .shift, .day { text-align: center; }
-  .member, .team { white-space: nowrap; width: 1%; }
-  th.day { border-bottom: none; }
-  thead th.shift { border-top: none; }
-  label { display: block; margin: 0; text-align: center; }
-  td { vertical-align: middle; }
-  th.day, .shift-night, .quals { border-right: 1px solid $table-border-color; }
+  .cell {
+    border-bottom: 1px solid $table-border-color;
+    border-right: 1px solid $table-border-color;
+    padding: 0.25 * $spacer 0.5 * $spacer;
+  }
+  .column-heading {
+    font-weight: bold;
+  }
 }
 
 .member-availability-form {
