@@ -24,8 +24,6 @@ const NavLink: React.FC<NavLinkProps> = ({ children, ...props }) => (
 const Page: React.FC<PageProps> = ({ title, heading, children }) => {
   const { member } = useAuth();
 
-  console.log(title);
-
   return (
     <React.Fragment>
       <Helmet>
