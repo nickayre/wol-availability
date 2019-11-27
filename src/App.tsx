@@ -9,6 +9,7 @@ import LoggingIn from './pages/LoggingIn';
 import Login from './pages/Login';
 import Logout from './pages/Logout';
 import Member from './pages/Member';
+import NotFound from './pages/NotFound';
 import Rescue from './pages/Rescue';
 import Stats from './pages/Stats';
 import Unit from './pages/Unit';
@@ -52,6 +53,9 @@ const AppRoutes: React.FC = () => {
       </Route>
       <Route path='/stats'>
         <Stats />
+      </Route>
+      <Route>
+        <NotFound />
       </Route>
     </Switch>
   );
