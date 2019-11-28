@@ -1,11 +1,10 @@
 import logo from '../assets/logo.svg';
 import { useAuth } from '../components/AuthContext';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Helmet } from 'react-helmet';
 import { FaUser } from 'react-icons/fa';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link, NavLinkProps } from 'react-router-dom';
@@ -24,11 +23,12 @@ const NavLink: React.FC<NavLinkProps> = ({ children, ...props }) => (
 const Page: React.FC<PageProps> = ({ title, heading, children }) => {
   const { member } = useAuth();
 
+  useEffect(() => {
+    document.title = `${title} | WOL SES Availability`;
+  });
+
   return (
     <React.Fragment>
-      <Helmet>
-        {title} | WOL SES Availability
-      </Helmet>
       <Navbar bg='dark' className='Header' expand='md' variant='dark'>
         <Navbar.Brand>
           <Link to='/'>

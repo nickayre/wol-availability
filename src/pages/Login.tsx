@@ -8,7 +8,6 @@ import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
-import Helmet from 'react-helmet';
 
 const LOGIN_MUTATION = gql`
   mutation ($memberNumber: Int!, $password: String!) {
@@ -97,14 +96,9 @@ const LoginForm: React.FC = () => {
 };
 
 const Login: React.FC = () => (
-  <React.Fragment>
-    <Helmet>
-      <title>Login | WOL SES Availability</title>
-    </Helmet>
-    <div id='login'>
-      <LoginForm />
-    </div>
-  </React.Fragment>
+  <div id='login'>
+    <LoginForm />
+  </div>
 );
 
 export default Login;
