@@ -1,15 +1,12 @@
+import { Member } from '../model/availability';
+
 import { ApolloProvider, useQuery } from '@apollo/react-hooks';
 import ApolloClient, { ApolloError } from 'apollo-boost';
 import gql from 'graphql-tag';
 import React, { createContext, useContext, useState } from 'react';
 
-interface MemberData {
-  number: number;
-  fullName: string;
-}
-
 interface AuthProps {
-  member?: MemberData;
+  member?: Member;
   loading: boolean;
   error?: ApolloError;
   login: (token: string, remember: boolean) => void;
@@ -29,12 +26,15 @@ const MEMBER_QUERY = gql`
     loggedInMember {
       number
       fullName
+      surname
+      team
+      permission
     }
   }
 `;
 
 interface MemberQueryData {
-  loggedInMember?: MemberData;
+  loggedInMember?: Member;
 }
 
 interface AuthQueryProps {
