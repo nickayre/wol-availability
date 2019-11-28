@@ -27,7 +27,7 @@ const WeekBrowser: React.FC<WeekBrowserProps> = ({ value, onChange }) => {
         variant='primary'
         onClick={handleToday}
         disabled={nowWeek.equals(value)}
-        className='mr-2'
+        className='mr-2 d-none d-md-block'
       >
         Today
       </Button>
