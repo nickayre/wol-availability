@@ -52,6 +52,36 @@
   align-items: center;
 }
 
+.member-table {
+  display: flex;
+  flex-direction: row;
+
+  .dates {
+    display: flex;
+    flex-direction: column;
+  }
+  .date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-bottom: 1px solid $table-border-color;
+    border-right: 1px solid $table-border-color;
+  }
+
+  .days {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+  .day {
+    height: 64px;
+    border-bottom: 1px solid $table-border-color;
+  }
+}
+
 .availability-table {
   .column {
     display: flex;
