@@ -5,8 +5,8 @@ export interface Member {
   fullName: string;
   surname: string;
   team: string;
-  permission: string;
-  qualifications: string[];
+  permission?: string;
+  qualifications?: string[];
 }
 
 type Available = 'AVAILABLE' | 'UNAVAILABLE';
