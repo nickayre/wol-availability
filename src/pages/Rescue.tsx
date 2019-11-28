@@ -1,4 +1,3 @@
-import Loading from '../components/Loading';
 import MemberFilter from '../components/MemberFilter';
 import Page from '../components/Page';
 import WeekBrowser from '../components/WeekBrowser';
@@ -10,6 +9,7 @@ import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import React, { useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import AvailabilityTable from '../components/AvailabilityTable';
@@ -41,7 +41,11 @@ const Rescue: React.FC = () => {
     <React.Fragment>
       {(() => {
         if (loading) {
-          return <Loading>Loading rescue availability&hellip;</Loading>;
+          return (
+            <Alert variant='info' className='m-3'>
+              <Spinner animation='border' size='sm' /> Loading member availability&hellip;
+            </Alert>
+          );
         }
 
         if (error || !data) {
@@ -49,7 +53,7 @@ const Rescue: React.FC = () => {
         }
 
         const members = data.members
-          .filter(member => member.qualifications.some(q => qualifications.includes(q)))
+          .filter(member => (member.qualifications || []).some(q => qualifications.includes(q)))
           .sort((a, b) => a.surname.localeCompare(b.surname));
 
         return (
