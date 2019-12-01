@@ -13,7 +13,6 @@ import NotFound from './pages/NotFound';
 import Rescue from './pages/Rescue';
 import Stats from './pages/Stats';
 import Storm from './pages/Storm';
-import Unit from './pages/Unit';
 
 const AppRoutes: React.FC = () => {
   const { loading, member } = useAuth();
