@@ -12,6 +12,7 @@ import Member from './pages/Member';
 import NotFound from './pages/NotFound';
 import Rescue from './pages/Rescue';
 import Stats from './pages/Stats';
+import Storm from './pages/Storm';
 import Unit from './pages/Unit';
 
 const AppRoutes: React.FC = () => {
@@ -47,6 +48,9 @@ const AppRoutes: React.FC = () => {
       </Route>
       <Route path='/member'>
         <Member />
+      </Route>
+      <Route path='/unit/storm'>
+        <Storm />
       </Route>
       <Route path='/unit/rescue'>
         <Rescue />
