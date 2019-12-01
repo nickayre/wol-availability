@@ -33,3 +33,18 @@ export function getDayIntervals(interval: Interval): Interval[] {
     .map(i => interval.start.plus({ days: i }))
     .map(dt => Interval.fromDateTimes(dt.startOf('day'), dt.endOf('day')));
 }
+
+/**
+ * Gets the position in [0, 1] of which @a dt is in @a interval.
+ */
+export function getIntervalPosition(interval: Interval, dt: DateTime): number {
+  if (interval.isAfter(dt)) {
+    return 0;
+  }
+
+  if (interval.isBefore(dt)) {
+    return 1;
+  }
+
+  return interval.start.until(dt).length('milliseconds') / interval.length('milliseconds');
+}

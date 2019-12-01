@@ -9,8 +9,8 @@ export interface Member {
   qualifications?: string[];
 }
 
-type Available = 'AVAILABLE' | 'UNAVAILABLE';
-type RescueAvailable = 'IMMEDIATE' | 'SUPPORT' | 'UNAVAILABLE';
+export type Available = 'AVAILABLE' | 'UNAVAILABLE';
+export type RescueAvailable = 'IMMEDIATE' | 'SUPPORT' | 'UNAVAILABLE';
 
 export interface Availability {
   interval: Interval;

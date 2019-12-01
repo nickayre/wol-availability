@@ -67,7 +67,6 @@
     justify-content: center;
     width: 64px;
     height: 64px;
-    border-bottom: 1px solid $table-border-color;
     border-right: 1px solid $table-border-color;
   }
 
@@ -79,6 +78,29 @@
   .day {
     height: 64px;
     border-bottom: 1px solid $table-border-color;
+    position: relative;
+  }
+
+  .availability {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: gray('100');
+
+    &.available {
+      background: rgba($green, 0.1);
+    }
+    &.support {
+      background: rgba($yellow, 0.1);
+    }
+    &.unavailable {
+      background: rgba($red, 0.1);
+    }
+  }
+}
+
+.available-indicator {
+  .indicator {
   }
 }
 

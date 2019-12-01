@@ -85,7 +85,7 @@ const Content: React.FC<ContentProps> = ({ member: memberNumber, interval }) => 
       <div className='toolbar'>
         <WeekBrowser value={interval} onChange={handleWeekChange} />
       </div>
-      <MemberTable interval={interval} />
+      <MemberTable member={member} interval={interval} />
     </Page>
   );
 };
