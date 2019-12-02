@@ -59,7 +59,12 @@ const Rescue: React.FC = () => {
         return (
           <React.Fragment>
             <div className='toolbar'>
-              <MemberFilter members={members} variant='primary' className='mr-2' />
+              <MemberFilter
+                id='rescue-member-filter'
+                members={members}
+                variant='primary'
+                className='mr-2'
+              />
               <WeekBrowser value={week} onChange={setWeek} />
             </div>
             <AvailabilityTable members={members} />

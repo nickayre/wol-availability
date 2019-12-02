@@ -99,9 +99,9 @@
   }
 }
 
-.available-indicator {
-  .indicator {
-  }
+.member-filter-popover {
+  // This needs to be quite long to account for longer qualification names.
+  min-width: 400px;
 }
 
 .availability-table {
