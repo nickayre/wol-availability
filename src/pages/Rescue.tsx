@@ -12,7 +12,7 @@ import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import AvailabilityTable from '../components/AvailabilityTable';
+import AvailabilityTable from '../components/UnitTable';
 
 const MEMBERS_QUERY = gql`
   query ($qualifications: [String!]) {
@@ -36,6 +36,7 @@ const Rescue: React.FC = () => {
   const { loading, error, data } = useQuery<MembersData>(MEMBERS_QUERY, {
     variables: { qualifications: RESCUE },
   });
+  const [filtered, setFiltered] = useState<Member[]>([]);
 
   const TabContent: React.FC<{ qualifications: string[] }> = ({ qualifications }) => (
     <React.Fragment>
@@ -58,16 +59,6 @@ const Rescue: React.FC = () => {
 
         return (
           <React.Fragment>
-            <div className='toolbar'>
-              <MemberFilter
-                id='rescue-member-filter'
-                members={members}
-                variant='primary'
-                className='mr-2'
-              />
-              <WeekBrowser value={week} onChange={setWeek} />
-            </div>
-            <AvailabilityTable members={members} />
           </React.Fragment>
         );
       })()}

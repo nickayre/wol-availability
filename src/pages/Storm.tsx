@@ -9,7 +9,8 @@ import gql from 'graphql-tag';
 import React, { useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
-import AvailabilityTable from '../components/AvailabilityTable';
+import AvailabilityTable from '../components/UnitTable';
+import UnitTable from '../components/UnitTable';
 
 const MEMBERS_QUERY = gql`
   {
@@ -52,18 +53,7 @@ const Storm: React.FC = () => {
         ));
 
         return (
-          <React.Fragment>
-            <div className='toolbar'>
-              <MemberFilter
-                id='storm-member-filter'
-                members={members}
-                variant='primary'
-                className='mr-2'
-              />
-              <WeekBrowser value={week} onChange={setWeek} />
-            </div>
-            <AvailabilityTable members={members} />
-          </React.Fragment>
+          <UnitTable id='unit-storm' members={members} week={week} onChangeWeek={setWeek} />
         );
       })()}
     </React.Fragment>

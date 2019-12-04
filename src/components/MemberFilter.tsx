@@ -1,41 +1,45 @@
 import { Member } from '../model/availability';
 import { FEATURED } from '../model/qualifications';
 
-import React, { useState } from 'react';
+import _ from 'lodash';
+import React, { ReactElement, useState } from 'react';
 import { Typeahead } from 'react-bootstrap-typeahead';
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
-import { FaChevronDown } from 'react-icons/fa';
 
 export interface MemberFilterProps {
   id: string;
-  members?: Member[];
+  members: Member[];
+  children: (popover: ReactElement, members: Member[]) => ReactElement | null;
 }
 
-type ButtonProps = React.ComponentProps<typeof Button>;
-
-const MemberFilter: React.FC<MemberFilterProps & ButtonProps> = ({ id, members, ...props }) => {
+const MemberFilter: React.FC<MemberFilterProps> = ({ id, members, children }) => {
   const [team, setTeam] = useState('');
-  const [_, setQualifications] = useState<string[]>([]);
+  const [qualifications, setQualifications] = useState<string[]>([]);
 
-  const teams = Array.from(new Set((members || []).map(member => member.team).sort()));
+  // Get the list of all teams.
+  const teams = _.uniq(members.map(m => m.team)).sort();
 
-  // Create a list of featured and all other non-featured qualifications and combine then.
-  const featured = FEATURED;
+  // Combine the list of featured qualifications then append all other qualifications.
+  const other = _.uniq(members.map(m => m.qualifications).flat().filter(q => !FEATURED.includes(q))).sort();
+  const qualificationOptions = [...FEATURED, ...other];
 
-  const other = Array
-    .from(new Set((members || [])
-      .map(member => member.qualifications!)
-      .flat()
-      .filter(qualification => !FEATURED.includes(qualification)),
-    ))
-    .sort();
+  // Filter the available members.
+  const filtered = members.filter(member => {
+    if (team !== '' && member.team !== team) {
+      return false;
+    }
 
-  const qualifications = [...featured, ...other];
+    if (qualifications.length > 0) {
+      if (!qualifications.every(q => member.qualifications && member.qualifications.includes(q))) {
+        return false;
+      }
+    }
 
-  const overlay = (
+    return true;
+  });
+
+  const popover = (
     <Popover id={id} className='member-filter-popover'>
       <Popover.Title as='h4'>Filter Members</Popover.Title>
       <Popover.Content>
@@ -48,15 +52,15 @@ const MemberFilter: React.FC<MemberFilterProps & ButtonProps> = ({ id, members, 
               value={team}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setTeam(e.target.value)}
             >
-              <option value=''>All</option>
-              {teams.map(t => <option key={t}>{t}</option>)}
+              <option value=''>All</option> {teams.map(t => <option key={t}>{t}</option>)}
             </Form.Control>
           </Form.Group>
           <Form.Group>
             <Form.Label>Qualifications</Form.Label>
             <Typeahead
+              id={`${id}-typeahead`}
               multiple
-              options={qualifications}
+              options={qualificationOptions}
               onChange={setQualifications}
             />
           </Form.Group>
@@ -65,17 +69,7 @@ const MemberFilter: React.FC<MemberFilterProps & ButtonProps> = ({ id, members, 
     </Popover>
   );
 
-  return (
-    <OverlayTrigger
-      trigger='click'
-      placement='bottom'
-      overlay={overlay}
-    >
-      <Button variant='secondary' {...props}>
-        Filter {members ? ` (${members.length})` : null} <FaChevronDown />
-      </Button>
-    </OverlayTrigger>
-  );
+  return children(popover, filtered);
 };
 
 export default MemberFilter;
