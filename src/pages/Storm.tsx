@@ -1,15 +1,11 @@
-import MemberFilter from '../components/MemberFilter';
 import Page from '../components/Page';
-import WeekBrowser from '../components/WeekBrowser';
 import { Member } from '../model/availability';
-import { getNow, getWeekInterval } from '../model/dates';
 
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import React, { useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
-import AvailabilityTable from '../components/UnitTable';
 import UnitTable from '../components/UnitTable';
 
 const MEMBERS_QUERY = gql`
@@ -29,8 +25,6 @@ interface MembersData {
 }
 
 const Storm: React.FC = () => {
-  const [week, setWeek] = useState(getWeekInterval(getNow()));
-
   const { loading, error, data } = useQuery<MembersData>(MEMBERS_QUERY);
 
   const TabContent: React.FC = () => (
@@ -53,7 +47,7 @@ const Storm: React.FC = () => {
         ));
 
         return (
-          <UnitTable id='unit-storm' members={members} week={week} onChangeWeek={setWeek} />
+          <UnitTable id='unit-storm' members={members} />
         );
       })()}
     </React.Fragment>
