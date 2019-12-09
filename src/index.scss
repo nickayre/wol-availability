@@ -80,6 +80,12 @@
     border-bottom: 1px solid $table-border-color;
     position: relative;
   }
+  .outside-week {
+    background: gray('200');
+    position: absolute;
+    top: 0;
+    bottom: 0;
+  }
 
   .availability {
     position: absolute;

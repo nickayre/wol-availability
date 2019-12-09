@@ -6,11 +6,6 @@ import { Interval } from 'luxon';
 import React from 'react';
 import { isMemberRescue } from '../model/qualifications';
 
-interface MemberTableProps {
-  member: Member;
-  interval: Interval;
-}
-
 /**
  * Gets the colour of the availability.
  */
@@ -34,17 +29,43 @@ function getAvailabilityClassName(member: Member, availability: Availability): s
   return null;
 }
 
-interface AvailableProps {
-  available: Available | RescueAvailable;
+interface RowProps {
+  availabilities: Availability[];
+  day: Interval;
+  week: Interval;
 }
 
-const AvailableIndicator: React.FC<AvailableProps> = ({ available, children }) => {
+const Row: React.FC<RowProps> = ({ day, week, availabilities }) => {
+  // The shift start/end doesn't cleanly overlap with week start and ends. Draw some greyed
+  // out sections to indicate this.
+  const outside: Array<[number, number]> = [];
+
+  if (week.start > day.start) {
+    outside.push([0, getIntervalPosition(day, week.start)]);
+  }
+
+  if (week.end < day.end) {
+    outside.push([getIntervalPosition(day, week.end), 1]);
+  }
+
   return (
-    <div className='available-indicator'>
-      <span className='indicator' /> {children}
+    <div className='day'>
+      {outside.map(([from, to], index) => {
+        const style = {
+          left: `${from * 100}%`,
+          right: `${(1 - to) * 100}%`,
+        };
+
+        return <div key={index} className='outside-week' style={style} />;
+      })}
     </div>
   );
 };
+
+interface MemberTableProps {
+  member: Member;
+  interval: Interval;
+}
 
 const MemberTable: React.FC<MemberTableProps> = ({ member, interval }) => {
   const availabilities: Availability[] = [
@@ -56,8 +77,9 @@ const MemberTable: React.FC<MemberTableProps> = ({ member, interval }) => {
   ];
 
   const days = getDayIntervals(interval).map(day => ({
+    availabilities: availabilities.filter(a => a.interval.overlaps(interval)),
     day,
-    included: availabilities.filter(a => a.interval.overlaps(interval)),
+    week: interval,
   }));
 
   return (
@@ -71,29 +93,8 @@ const MemberTable: React.FC<MemberTableProps> = ({ member, interval }) => {
         ))}
       </div>
       <div className='days'>
-        {days.map(({ day, included }, index) => (
-          <div key={index} className='day'>
-            {included.map(availability => {
-              const className = clsx(
-                'availability', getAvailabilityClassName(member, availability)
-              );
-
-              const left = getIntervalPosition(day, availability.interval.start);
-              const right = 1 - getIntervalPosition(day, availability.interval.end);
-              const style = { left: `${left * 100}%`, right: `${right * 100}%` };
-
-              return (
-                <div
-                  key={availability.interval.toString()}
-                  className={className}
-                  style={style}
-                >
-                  <AvailableIndicator available='AVAILABLE'>Storm and support</AvailableIndicator>
-                  <AvailableIndicator available='SUPPORT'>Rescue</AvailableIndicator>
-                </div>
-              );
-            })}
-          </div>
+        {days.map((props, index) => (
+          <Row key={index} {...props} />
         ))}
       </div>
     </div>
