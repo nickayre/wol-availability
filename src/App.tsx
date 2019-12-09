@@ -51,7 +51,10 @@ const AppRoutes: React.FC = () => {
       <Route path='/unit/storm'>
         <Storm />
       </Route>
-      <Route path='/unit/rescue'>
+      <Route path='/unit/vr'>
+        <Rescue />
+      </Route>
+      <Route path='/unit/fr'>
         <Rescue />
       </Route>
       <Route path='/stats'>

@@ -41,14 +41,20 @@ const Page: React.FC<PageProps> = ({ title, heading, children }) => {
           <Nav>
             <NavLink to='/' exact>Home</NavLink>
             <NavLink to='/member'>Member</NavLink>
-            <NavDropdown id='unit' title='Unit'>
-              <LinkContainer to='/unit/storm'>
-                <NavDropdown.Item>Storm and Support</NavDropdown.Item>
-              </LinkContainer>
-              <LinkContainer to='/unit/rescue'>
-                <NavDropdown.Item>Rescue</NavDropdown.Item>
-              </LinkContainer>
-            </NavDropdown>
+            <LinkContainer to='/unit'>
+              <NavDropdown id='unit' title='Unit'>
+                <LinkContainer to='/unit/storm'>
+                  <NavDropdown.Item>Storm and Support</NavDropdown.Item>
+                </LinkContainer>
+                <NavDropdown.Divider />
+                <LinkContainer to='/unit/vr'>
+                  <NavDropdown.Item>Vertical Rescue</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to='/unit/fr'>
+                  <NavDropdown.Item>Flood Rescue</NavDropdown.Item>
+                </LinkContainer>
+              </NavDropdown>
+            </LinkContainer>
             <NavLink to='/stats'>Statistics</NavLink>
           </Nav>
           <Nav className='ml-auto'>
