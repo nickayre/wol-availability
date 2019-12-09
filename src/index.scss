@@ -53,6 +53,8 @@
 }
 
 .member-table {
+  $row-height: 72px;
+
   display: flex;
   flex-direction: row;
 
@@ -65,8 +67,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 64px;
-    height: 64px;
+    width: $row-height;
+    height: $row-height;
     border-right: 1px solid $table-border-color;
   }
 
@@ -76,15 +78,36 @@
     flex-direction: column;
   }
   .day {
-    height: 64px;
+    height: $row-height;
     border-bottom: 1px solid $table-border-color;
     position: relative;
   }
-  .outside-week {
-    background: gray('200');
+
+  .outside {
+    background: gray('100');
     position: absolute;
     top: 0;
     bottom: 0;
+  }
+
+  .blocks {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+
+    .block {
+      cursor: pointer;
+      flex: 1;
+      top: 0;
+      bottom: 0;
+
+      &:not(:last-child) {
+        border-right: 1px solid $table-border-color;
+      }
+    }
   }
 
   .availability {

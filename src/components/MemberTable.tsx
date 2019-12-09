@@ -29,6 +29,10 @@ function getAvailabilityClassName(member: Member, availability: Availability): s
   return null;
 }
 
+const Block: React.FC = () => (
+  <div className='block'></div>
+);
+
 interface RowProps {
   availabilities: Availability[];
   day: Interval;
@@ -36,6 +40,11 @@ interface RowProps {
 }
 
 const Row: React.FC<RowProps> = ({ day, week, availabilities }) => {
+  // Figure out how many blocks to render.
+  const blockCount = 12;
+
+  const blocks = Array.from(new Array(blockCount));
+
   // The shift start/end doesn't cleanly overlap with week start and ends. Draw some greyed
   // out sections to indicate this.
   const outside: Array<[number, number]> = [];
@@ -56,8 +65,13 @@ const Row: React.FC<RowProps> = ({ day, week, availabilities }) => {
           right: `${(1 - to) * 100}%`,
         };
 
-        return <div key={index} className='outside-week' style={style} />;
+        return <div key={index} className='outside' style={style} />;
       })}
+      <div className='blocks'>
+        {blocks.map((block, index) => (
+          <Block />
+        ))}
+      </div>
     </div>
   );
 };
