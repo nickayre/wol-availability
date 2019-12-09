@@ -7,7 +7,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { FaUser } from 'react-icons/fa';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Link, NavLinkProps } from 'react-router-dom';
+import { Link, NavLinkProps, useRouteMatch } from 'react-router-dom';
 
 export interface PageProps {
   title: string;
@@ -19,6 +19,25 @@ const NavLink: React.FC<NavLinkProps> = ({ children, ...props }) => (
     <Nav.Link>{children}</Nav.Link>
   </LinkContainer>
 );
+
+const UnitNavDropdown: React.FC = () => {
+  const active = useRouteMatch('/unit') !== null;
+
+  return (
+    <NavDropdown id='unit' title='Unit' className={active ? 'active' : null}>
+      <LinkContainer to='/unit/storm'>
+        <NavDropdown.Item>Storm and Support</NavDropdown.Item>
+      </LinkContainer>
+      <NavDropdown.Divider />
+      <LinkContainer to='/unit/vr'>
+        <NavDropdown.Item>Vertical Rescue</NavDropdown.Item>
+      </LinkContainer>
+      <LinkContainer to='/unit/fr'>
+        <NavDropdown.Item>Flood Rescue</NavDropdown.Item>
+      </LinkContainer>
+    </NavDropdown>
+  );
+};
 
 const Page: React.FC<PageProps> = ({ title, heading, children }) => {
   const { member } = useAuth();
@@ -41,20 +60,7 @@ const Page: React.FC<PageProps> = ({ title, heading, children }) => {
           <Nav>
             <NavLink to='/' exact>Home</NavLink>
             <NavLink to='/member'>Member</NavLink>
-            <LinkContainer to='/unit'>
-              <NavDropdown id='unit' title='Unit'>
-                <LinkContainer to='/unit/storm'>
-                  <NavDropdown.Item>Storm and Support</NavDropdown.Item>
-                </LinkContainer>
-                <NavDropdown.Divider />
-                <LinkContainer to='/unit/vr'>
-                  <NavDropdown.Item>Vertical Rescue</NavDropdown.Item>
-                </LinkContainer>
-                <LinkContainer to='/unit/fr'>
-                  <NavDropdown.Item>Flood Rescue</NavDropdown.Item>
-                </LinkContainer>
-              </NavDropdown>
-            </LinkContainer>
+            <UnitNavDropdown />
             <NavLink to='/stats'>Statistics</NavLink>
           </Nav>
           <Nav className='ml-auto'>
