@@ -95,11 +95,16 @@
     position: relative;
   }
 
-  .outside {
-    background: gray('100');
+  .outside, .selection {
     position: absolute;
     top: 0;
     bottom: 0;
+  }
+  .outside {
+    background: gray('100');
+  }
+  .selection {
+    background: rgba($blue, 0.25);
   }
 
   .blocks {
@@ -112,6 +117,7 @@
   }
   .block {
     border-right: 1px solid $table-border-color;
+    cursor: pointer;
     flex-grow: 1;
   }
 

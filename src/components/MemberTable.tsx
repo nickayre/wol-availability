@@ -35,10 +35,10 @@ interface RowProps {
   day: Interval;
   week: Interval;
   selections: Interval[];
-  onSelect: (interval: Interval) => void;
+  onClick: (interval: Interval) => void;
 }
 
-const Row: React.FC<RowProps> = ({ member, day, week, availabilities, selections, onSelect }) => {
+const Row: React.FC<RowProps> = ({ member, day, week, availabilities, selections, onClick }) => {
   // Figure out how many blocks to render.
   const blockCount = 12;
   const blocks = day.divideEqually(blockCount);
@@ -70,9 +70,16 @@ const Row: React.FC<RowProps> = ({ member, day, week, availabilities, selections
 
           return <div key={index} className='outside' style={style} />;
         })}
+        {selections.map((selection, index) => {
+          const from = getIntervalPosition(day, selection.start);
+          const to = getIntervalPosition(day, selection.end);
+          const style = { left: `${from * 100}%`, right: `${(1 - to) * 100}%` };
+
+          return <div key={index} className='selection' style={style} />;
+        })}
         <div className='blocks'>
-          {blocks.map((block, index) => (
-            <div key={index} className='block' />
+          {blocks.map((interval, index) => (
+            <div key={index} className='block' onClick={() => onClick(interval)} />
           ))}
         </div>
       </div>
@@ -94,10 +101,16 @@ const MemberTable: React.FC<MemberTableProps> = ({ member, interval }) => {
     },
   ];
 
-  const [selections, setSeleections] = useState<Interval[]>([]);
+  const [selections, setSelections] = useState<Interval[]>([]);
 
-  const handleSelect = (selected: Interval) => {
-    setSeleections([selected, ...selections]);
+  const handleClick = (selected: Interval) => {
+    const engulfed = selections.some(s => s.engulfs(selected));
+
+    if (engulfed) {
+      setSelections(Interval.xor([...selections, selected]));
+    } else {
+      setSelections(Interval.merge([...selections, selected]));
+    }
   };
 
   const days = getDayIntervals(interval).map(day => ({
@@ -113,7 +126,7 @@ const MemberTable: React.FC<MemberTableProps> = ({ member, interval }) => {
           key={index}
           member={member}
           selections={selections.filter(s => s.overlaps(props.day))}
-          onSelect={handleSelect}
+          onClick={handleClick}
           {...props}
         />
       ))}
