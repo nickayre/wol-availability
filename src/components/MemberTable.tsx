@@ -3,7 +3,7 @@ import { getDayIntervals, getIntervalPosition } from '../model/dates';
 
 import clsx from 'clsx';
 import { Interval } from 'luxon';
-import React from 'react';
+import React, { useState } from 'react';
 import { isMemberRescue } from '../model/qualifications';
 
 /**
@@ -29,21 +29,19 @@ function getAvailabilityClassName(member: Member, availability: Availability): s
   return null;
 }
 
-const Block: React.FC = () => (
-  <div className='block'></div>
-);
-
 interface RowProps {
+  member: Member;
   availabilities: Availability[];
   day: Interval;
   week: Interval;
+  selections: Interval[];
+  onSelect: (interval: Interval) => void;
 }
 
-const Row: React.FC<RowProps> = ({ day, week, availabilities }) => {
+const Row: React.FC<RowProps> = ({ member, day, week, availabilities, selections, onSelect }) => {
   // Figure out how many blocks to render.
   const blockCount = 12;
-
-  const blocks = Array.from(new Array(blockCount));
+  const blocks = day.divideEqually(blockCount);
 
   // The shift start/end doesn't cleanly overlap with week start and ends. Draw some greyed
   // out sections to indicate this.
@@ -59,18 +57,24 @@ const Row: React.FC<RowProps> = ({ day, week, availabilities }) => {
 
   return (
     <div className='day'>
-      {outside.map(([from, to], index) => {
-        const style = {
-          left: `${from * 100}%`,
-          right: `${(1 - to) * 100}%`,
-        };
+      <div className='day-date'>
+        <span className='text-muted'>{day.start.toFormat('ccc')}</span>
+        <span className='h5'>{day.start.toFormat('d')}</span>
+      </div>
+      <div className='day-body'>
+        {outside.map(([from, to], index) => {
+          const style = {
+            left: `${from * 100}%`,
+            right: `${(1 - to) * 100}%`,
+          };
 
-        return <div key={index} className='outside' style={style} />;
-      })}
-      <div className='blocks'>
-        {blocks.map((block, index) => (
-          <Block />
-        ))}
+          return <div key={index} className='outside' style={style} />;
+        })}
+        <div className='blocks'>
+          {blocks.map((block, index) => (
+            <div key={index} className='block' />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -84,11 +88,17 @@ interface MemberTableProps {
 const MemberTable: React.FC<MemberTableProps> = ({ member, interval }) => {
   const availabilities: Availability[] = [
     {
-      interval: Interval.fromISO('2019-11-26T11:00:00/2019-11-28T20:00:00'),
+      interval: Interval.fromISO('2019-12-10T11:00:00/2019-12-14T20:00:00'),
       rescue: 'SUPPORT',
       storm: 'AVAILABLE',
     },
   ];
+
+  const [selections, setSeleections] = useState<Interval[]>([]);
+
+  const handleSelect = (selected: Interval) => {
+    setSeleections([selected, ...selections]);
+  };
 
   const days = getDayIntervals(interval).map(day => ({
     availabilities: availabilities.filter(a => a.interval.overlaps(interval)),
@@ -98,19 +108,15 @@ const MemberTable: React.FC<MemberTableProps> = ({ member, interval }) => {
 
   return (
     <div className='member-table'>
-      <div className='dates'>
-        {days.map(({ day }, index) => (
-          <div key={index} className='date'>
-            <span className='text-muted'>{day.start.toFormat('ccc')}</span>
-            <span className='h5'>{day.start.toFormat('d')}</span>
-          </div>
-        ))}
-      </div>
-      <div className='days'>
-        {days.map((props, index) => (
-          <Row key={index} {...props} />
-        ))}
-      </div>
+      {days.map((props, index) => (
+        <Row
+          key={index}
+          member={member}
+          selections={selections.filter(s => s.overlaps(props.day))}
+          onSelect={handleSelect}
+          {...props}
+        />
+      ))}
     </div>
   );
 };

@@ -10,7 +10,9 @@ import gql from 'graphql-tag';
 import { DateTime, Interval } from 'luxon';
 import React from 'react';
 import Alert from 'react-bootstrap/Alert';
+import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
+import { FaEllipsisH, FaPlus } from 'react-icons/fa';
 import { useHistory, useParams } from 'react-router-dom';
 
 interface Params {
@@ -86,6 +88,14 @@ const Content: React.FC<ContentProps> = ({ member: memberNumber, interval }) => 
         <WeekBrowser value={interval} onChange={handleWeekChange} />
       </div>
       <MemberTable member={member} interval={interval} />
+      <div className='toolbar toolbar-bottom'>
+        <Button variant='primary' className='mr-2'>
+          <FaPlus /> Add Availability
+        </Button>
+        <Button variant='secondary'>
+          <FaEllipsisH />
+        </Button>
+      </div>
     </Page>
   );
 };
