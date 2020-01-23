@@ -25,6 +25,13 @@ export function getWeekInterval(dt: DateTime): Interval {
 }
 
 /**
+ * Gets the current week interval we are in.
+ */
+export function getCurrentWeekInterval(): Interval {
+  return getWeekInterval(getNow());
+}
+
+/**
  * Gets the day intervals within an overall interval
  */
 export function getDayIntervals(interval: Interval): Interval[] {
