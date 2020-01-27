@@ -1,10 +1,11 @@
 import { Availability, Available, Member, RescueAvailable } from '../model/availability';
 import { getDayIntervals, getIntervalPosition } from '../model/dates';
+import { isMemberRescue } from '../model/qualifications';
 
 import clsx from 'clsx';
 import { Interval } from 'luxon';
 import React, { useState } from 'react';
-import { isMemberRescue } from '../model/qualifications';
+import Measure, { ContentRect } from 'react-measure';
 
 /**
  * Gets the colour of the availability.
@@ -30,6 +31,7 @@ function getAvailabilityClassName(member: Member, availability: Availability): s
 }
 
 interface RowProps {
+  blockCount: number;
   member: Member;
   availabilities: Availability[];
   day: Interval;
@@ -38,9 +40,8 @@ interface RowProps {
   onClick: (interval: Interval) => void;
 }
 
-const Row: React.FC<RowProps> = ({ member, day, week, availabilities, selections, onClick }) => {
+const Row: React.FC<RowProps> = ({ blockCount, member, day, week, availabilities, selections, onClick }) => {
   // Figure out how many blocks to render.
-  const blockCount = 12;
   const blocks = day.divideEqually(blockCount);
 
   // The shift start/end doesn't cleanly overlap with week start and ends. Draw some greyed
@@ -101,7 +102,20 @@ const MemberTable: React.FC<MemberTableProps> = ({ member, interval }) => {
     },
   ];
 
+  const [blockCount, setBlockCount] = useState(12);
   const [selections, setSelections] = useState<Interval[]>([]);
+
+  const handleResize = (bounds: ContentRect) => {
+    const width = bounds.bounds?.width || 0;
+
+    if (width > 1000) {
+      setBlockCount(12);
+    } else if (width > 640) {
+      setBlockCount(8);
+    } else {
+      setBlockCount(4);
+    }
+  };
 
   const handleClick = (selected: Interval) => {
     const engulfed = selections.some(s => s.engulfs(selected));
@@ -120,17 +134,22 @@ const MemberTable: React.FC<MemberTableProps> = ({ member, interval }) => {
   }));
 
   return (
-    <div className='member-table'>
-      {days.map((props, index) => (
-        <Row
-          key={index}
-          member={member}
-          selections={selections.filter(s => s.overlaps(props.day))}
-          onClick={handleClick}
-          {...props}
-        />
-      ))}
-    </div>
+    <Measure bounds onResize={handleResize}>
+      {({ measureRef }) => (
+        <div className='member-table' ref={measureRef}>
+          {days.map((props, index) => (
+            <Row
+              blockCount={blockCount}
+              key={index}
+              member={member}
+              selections={selections.filter(s => s.overlaps(props.day))}
+              onClick={handleClick}
+              {...props}
+            />
+          ))}
+        </div>
+      )}
+    </Measure>
   );
 };
 
