@@ -57,7 +57,7 @@ const Row: React.FC<RowProps> = ({ member, day, week, availabilities, selections
 
   return (
     <div className='day'>
-      <div className='day-date'>
+      <div className='day-date' onClick={() => onClick(day)}>
         <span className='text-muted'>{day.start.toFormat('ccc')}</span>
         <span className='h5'>{day.start.toFormat('d')}</span>
       </div>
