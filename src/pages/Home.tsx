@@ -2,9 +2,12 @@ import Page from '../components/Page';
 
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import React, { useEffect } from 'react';
+import React from 'react';
 import Alert from 'react-bootstrap/Alert';
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 
 const HOME_QUERY = gql`
@@ -42,10 +45,24 @@ const Home: React.FC = () => {
           const { day, night } = data.shiftTeams;
 
           return (
-            <Alert variant='info'>
-              <strong>{day}</strong> is day shift and <strong>{night}</strong> is night shift.
-            </Alert>
-          )
+            <React.Fragment>
+              <Alert variant='info'>
+                <strong>{day}</strong> is day shift and <strong>{night}</strong> is night shift.
+              </Alert>
+              <Row>
+                <Col md={6}>
+                  <Card>
+                    <Card.Header>Storm and Support</Card.Header>
+                  </Card>
+                </Col>
+                <Col md={6}>
+                  <Card>
+                    <Card.Header>Rescue</Card.Header>
+                  </Card>
+                </Col>
+              </Row>
+            </React.Fragment>
+          );
         })()}
       </Container>
     </Page>
