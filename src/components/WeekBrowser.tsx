@@ -4,7 +4,7 @@ import { DateTime, Interval } from 'luxon';
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { FaArrowLeft, FaArrowRight, FaCalendar } from 'react-icons/fa';
 
 export interface WeekBrowserProps {
   value: Interval;
@@ -27,9 +27,10 @@ const WeekBrowser: React.FC<WeekBrowserProps> = ({ value, onChange }) => {
         variant='primary'
         onClick={handleToday}
         disabled={nowWeek.equals(value)}
-        className='mr-2 d-none d-md-block'
+        className='mr-2'
       >
-        Today
+        <span className='d-none d-md-inline'>Today</span>
+        <span className='d-md-none'><FaCalendar /></span>
       </Button>
       <ButtonGroup className='mr-2'>
         <Button variant='outline-secondary' onClick={handlePrevious}><FaArrowLeft /></Button>
