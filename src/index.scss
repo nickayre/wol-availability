@@ -132,6 +132,30 @@
   }
 }
 
+.availability-form-fade {
+  background: rgba(#000, 0.66);
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1000;
+}
+.availability-form-container {
+  background: #fff;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  z-index: 1000;
+
+  form {
+    @extend .p-3;
+  }
+}
+
 .member-filter-popover {
   // This needs to be quite long to account for longer qualification names.
   min-width: 400px;

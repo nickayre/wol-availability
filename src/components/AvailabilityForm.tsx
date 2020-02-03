@@ -3,6 +3,7 @@ import { Available, RescueAvailable } from '../model/availability';
 import React, { useState } from 'react';
 import Button, { ButtonProps } from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Collapse from 'react-bootstrap/Collapse';
 import Form from 'react-bootstrap/Form';
 
 interface RadioButtonGroupProps<T> {
@@ -32,59 +33,75 @@ class RadioButtonGroup<T> extends React.Component<RadioButtonGroupProps<T>, any>
   }
 }
 
-const AvailabilityForm: React.FC = props => {
+interface AvailabilityFormProps {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}
+
+const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ open, setOpen }) => {
   const [storm, setStorm] = useState<Available | undefined>();
   const [rescue, setRescue] = useState<RescueAvailable | undefined>();
   const [vehicle, setVehicle] = useState('');
   const [note, setNote] = useState('');
 
   return (
-    <Form>
-      <Form.Group controlId='storm'>
-        <Form.Label>Storm and support</Form.Label>
-        <div>
-          <RadioButtonGroup
-            options={[
-              { value: 'AVAILABLE', text: 'Available', variant: 'success' },
-              { value: 'UNAVAILABLE', text: 'Unavailable', variant: 'danger' },
-            ]}
-            value={storm}
-            onChange={setStorm}
-          />
+    <React.Fragment>
+      <div
+        className='availability-form-fade'
+        style={{ display: open ? 'block' : 'none' }}
+        onClick={() => setOpen(false)}
+      />
+      <Collapse in={open}>
+        <div className='availability-form-container'>
+          <Form>
+            <Form.Group controlId='storm'>
+              <Form.Label>Storm and support</Form.Label>
+              <div>
+                <RadioButtonGroup
+                  options={[
+                    { value: 'AVAILABLE', text: 'Available', variant: 'success' },
+                    { value: 'UNAVAILABLE', text: 'Unavailable', variant: 'danger' },
+                  ]}
+                  value={storm}
+                  onChange={setStorm}
+                />
+              </div>
+            </Form.Group>
+            <Form.Group controlId='rescue'>
+              <Form.Label>Rescue</Form.Label>
+              <div>
+                <RadioButtonGroup
+                  options={[
+                    { value: 'IMMEDIATE', text: 'Immediate', variant: 'success' },
+                    { value: 'SUPPORT', text: 'Support', variant: 'warning' },
+                    { value: 'UNAVAILABLE', text: 'Unavailable', variant: 'danger' },
+                  ]}
+                  value={rescue}
+                  onChange={setRescue}
+                />
+              </div>
+            </Form.Group>
+            <Form.Group controlId='vehicle'>
+              <Form.Label>Covering vehicle</Form.Label>
+              <Form.Control
+                type='text'
+                value={vehicle}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setVehicle(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group controlId='note'>
+              <Form.Label>Note</Form.Label>
+              <Form.Control
+                type='text'
+                value={note}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNote(e.target.value)}
+              />
+            </Form.Group>
+            <Button type='submit' variant='primary'>Save</Button>
+          </Form>
         </div>
-      </Form.Group>
-      <Form.Group controlId='rescue'>
-        <Form.Label>Rescue</Form.Label>
-        <div>
-          <RadioButtonGroup
-            options={[
-              { value: 'IMMEDIATE', text: 'Immediate', variant: 'success' },
-              { value: 'SUPPORT', text: 'Support', variant: 'warning' },
-              { value: 'UNAVAILABLE', text: 'Unavailable', variant: 'danger' },
-            ]}
-            value={rescue}
-            onChange={setRescue}
-          />
-        </div>
-      </Form.Group>
-      <Form.Group controlId='vehicle'>
-        <Form.Label>Covering vehicle</Form.Label>
-        <Form.Control
-          type='text'
-          value={vehicle}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setVehicle(e.target.value)}
-        />
-      </Form.Group>
-      <Form.Group controlId='note'>
-        <Form.Label>Note</Form.Label>
-        <Form.Control
-          type='text'
-          value={note}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNote(e.target.value)}
-        />
-      </Form.Group>
-      <Button type='submit' variant='primary'>Save</Button>
-    </Form>
+      </Collapse>
+    </React.Fragment>
   );
 };
 

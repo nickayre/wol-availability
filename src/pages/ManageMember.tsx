@@ -99,12 +99,10 @@ const Content: React.FC<ContentProps> = ({ member: memberNumber, interval }) => 
           <FaPlus /> Add Availability
         </Button>
         <Dropdown>
-          <Dropdown.Toggle variant='secondary' id='manage-member-actions'>
-            Actions
-          </Dropdown.Toggle>
+          <Dropdown.Toggle variant='secondary' id='manage-member-actions' />
           <Dropdown.Menu>
             <Dropdown.Item>Save as my default</Dropdown.Item>
-            <Dropdown.Item>Load from my default</Dropdown.Item>
+            <Dropdown.Item>Set from my default</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Header>Storm and Support</Dropdown.Header>
             <Dropdown.Item>Set week available</Dropdown.Item>
@@ -117,11 +115,7 @@ const Content: React.FC<ContentProps> = ({ member: memberNumber, interval }) => 
           </Dropdown.Menu>
         </Dropdown>
       </div>
-      <Collapse in={open}>
-        <div className='pt-0 p-3'>
-          <AvailabilityForm />
-        </div>
-      </Collapse>
+      <AvailabilityForm open={open} setOpen={setOpen} />
     </Page>
   );
 };
