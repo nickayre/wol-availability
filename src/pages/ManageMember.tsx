@@ -13,8 +13,9 @@ import React, { useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Collapse from 'react-bootstrap/Collapse';
+import Dropdown from 'react-bootstrap/Dropdown';
 import Spinner from 'react-bootstrap/Spinner';
-import { FaEllipsisH, FaPlus } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
 import { useHistory, useParams } from 'react-router-dom';
 
 interface Params {
@@ -97,9 +98,24 @@ const Content: React.FC<ContentProps> = ({ member: memberNumber, interval }) => 
         <Button variant='primary' className='mr-2' onClick={toggleOpen}>
           <FaPlus /> Add Availability
         </Button>
-        <Button variant='secondary'>
-          <FaEllipsisH />
-        </Button>
+        <Dropdown>
+          <Dropdown.Toggle variant='secondary' id='manage-member-actions'>
+            Actions
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item>Save as my default</Dropdown.Item>
+            <Dropdown.Item>Load from my default</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Header>Storm and Support</Dropdown.Header>
+            <Dropdown.Item>Set week available</Dropdown.Item>
+            <Dropdown.Item>Set week unavailable</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Header>Rescue</Dropdown.Header>
+            <Dropdown.Item>Set week immediate</Dropdown.Item>
+            <Dropdown.Item>Set week support</Dropdown.Item>
+            <Dropdown.Item>Set week unavailable</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </div>
       <Collapse in={open}>
         <div className='pt-0 p-3'>
