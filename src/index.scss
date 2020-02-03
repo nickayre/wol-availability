@@ -63,80 +63,49 @@
 }
 
 .member-table {
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
   overflow-y: auto;
 
-  .day {
+  .member-table-row {
     border-bottom: 1px solid $table-border-color;
     display: flex;
     flex-direction: row;
-    height: 64px;
+  }
 
-    @include media-breakpoint-up(lg) {
-      height: 80px;
+  .member-table-body {
+    .member-table-row {
+      height: 64px;
+    }
+    .member-table-date {
+      border-right: 1px solid $table-border-color;
     }
   }
 
-  .day-date {
-    cursor: pointer;
+  .member-table-date {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    border-right: 1px solid $table-border-color;
+    text-align: center;
     width: 64px;
-
-    span {
-      margin-bottom: 0;
-    }
   }
 
-  .day-body {
-    flex-grow: 1;
-    position: relative;
-  }
-
-  .outside, .selection {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-  }
-  .outside {
-    background: gray('100');
-  }
-  .selection {
-    background: rgba($blue, 0.25);
-  }
-
-  .blocks {
-    display: flex;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-  }
-  .block {
+  .member-table-time {
     border-right: 1px solid $table-border-color;
     cursor: pointer;
     flex-grow: 1;
+    height: 32px;
+    position: relative;
   }
-
-  .availability {
+  .member-table-time-text {
+    @extend .text-muted;
+    background: #fff;
+    padding: 2px 0;
     position: absolute;
-    top: 0;
-    bottom: 0;
-    background: gray('100');
-
-    &.available {
-      background: rgba($green, 0.1);
-    }
-    &.support {
-      background: rgba($yellow, 0.1);
-    }
-    &.unavailable {
-      background: rgba($red, 0.1);
-    }
+    right: -24px;
+    text-align: center;
+    width: 48px;
   }
 }
 
