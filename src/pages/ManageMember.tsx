@@ -1,4 +1,5 @@
 import { useAuth } from '../components/AuthContext';
+import AvailabilityForm from '../components/AvailabilityForm';
 import MemberTable from '../components/MemberTable';
 import Page from '../components/Page';
 import WeekBrowser from '../components/WeekBrowser';
@@ -8,9 +9,10 @@ import { getNow, getWeekInterval } from '../model/dates';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { DateTime, Interval } from 'luxon';
-import React from 'react';
+import React, { useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
+import Collapse from 'react-bootstrap/Collapse';
 import Spinner from 'react-bootstrap/Spinner';
 import { FaEllipsisH, FaPlus } from 'react-icons/fa';
 import { useHistory, useParams } from 'react-router-dom';
@@ -45,6 +47,9 @@ interface ContentProps {
 }
 
 const Content: React.FC<ContentProps> = ({ member: memberNumber, interval }) => {
+  const [open, setOpen] = useState(false);
+  const toggleOpen = () => setOpen(!open);
+
   const { member: me } = useAuth();
   const history = useHistory();
 
@@ -89,13 +94,18 @@ const Content: React.FC<ContentProps> = ({ member: memberNumber, interval }) => 
       </div>
       <MemberTable member={member} interval={interval} />
       <div className='toolbar toolbar-bottom'>
-        <Button variant='primary' className='mr-2'>
+        <Button variant='primary' className='mr-2' onClick={toggleOpen}>
           <FaPlus /> Add Availability
         </Button>
         <Button variant='secondary'>
           <FaEllipsisH />
         </Button>
       </div>
+      <Collapse in={open}>
+        <div className='pt-0 p-3'>
+          <AvailabilityForm />
+        </div>
+      </Collapse>
     </Page>
   );
 };
