@@ -63,6 +63,8 @@
 }
 
 .member-table {
+  $row-height: 64px;
+
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -76,7 +78,7 @@
 
   .member-table-body {
     .member-table-row {
-      height: 64px;
+      height: $row-height;
     }
     .member-table-date {
       border-right: 1px solid $table-border-color;
@@ -84,11 +86,12 @@
   }
 
   .member-table-date {
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    width: 64px;
+    width: $row-height;
   }
 
   .member-table-time {
@@ -106,6 +109,26 @@
     right: -24px;
     text-align: center;
     width: 48px;
+  }
+
+  .member-table-day-container {
+    display: flex;
+    flex-grow: 1;
+    position: relative;
+  }
+
+  .member-table-cell {
+    border-right: 1px solid $table-border-color;
+    cursor: pointer;
+    flex-grow: 1;
+    z-index: 1;
+  }
+
+  .member-table-selection {
+    background: rgba($blue, 0.25);
+    bottom:0;
+    position: absolute;
+    top: 0;
   }
 }
 
