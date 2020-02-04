@@ -12,7 +12,6 @@ import { DateTime, Interval } from 'luxon';
 import React, { useState } from 'react';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
-import Collapse from 'react-bootstrap/Collapse';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Spinner from 'react-bootstrap/Spinner';
 import { FaPlus } from 'react-icons/fa';

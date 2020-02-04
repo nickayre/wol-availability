@@ -13,12 +13,13 @@ interface MemberTableProps {
 
 interface RowProps {
   day: Interval;
+  week: Interval;
   columnCount: number;
   selections: Interval[];
   handleSelect: (...selection: Interval[]) => void;
 }
 
-const Row: React.FC<RowProps> = ({ day, columnCount, selections, handleSelect }) => {
+const Row: React.FC<RowProps> = ({ day, week, columnCount, selections, handleSelect }) => {
   const intervals = day.divideEqually(columnCount);
   const { start } = day;
 
@@ -61,18 +62,27 @@ const MemberTable: React.FC<MemberTableProps> = ({ member, interval }) => {
   const [columnCount, setColumnCount] = useState(12);
 
   const days = getDayIntervals(interval);
-  const columns = _.range(columnCount).map(i => 24 * (i + 1) / columnCount);
+  const columns = _.range(columnCount).map(i => 24 * i / columnCount);
 
   const handleSelect = (...selected: Interval[]) => {
-    for (const selection of selected) {
-      const engulfed = selections.some(s => s.engulfs(selection));
+    const engulfed = selected.every(sel => selections.some(existing => existing.engulfs(sel)));
 
-      if (engulfed) {
-        setSelections(Interval.xor([...selections, selection]));
-      } else {
-        setSelections(Interval.merge([...selections, selection]));
-      }
+    if (engulfed) {
+      setSelections(Interval.xor([...selections, ...selected]));
+    } else {
+      setSelections(Interval.merge([...selections, ...selected]));
     }
+  };
+
+  const handleSelectTime = (startHour: number, lengthHours: number) => {
+    const times = days.map(day => {
+      const start = day.start.set({ hour: startHour });
+      const end = start.plus({ hours: lengthHours });
+
+      return Interval.fromDateTimes(start, end);
+    });
+
+    handleSelect(...times);
   };
 
   const handleResize = (bounds: ContentRect) => {
@@ -94,11 +104,15 @@ const MemberTable: React.FC<MemberTableProps> = ({ member, interval }) => {
           <div className='member-table-head'>
             <div className='member-table-row'>
               <div className='member-table-date'></div>
-              {columns.map((start, index) => (
-                <div key={index} className='member-table-time'>
-                  {index < columns.length - 1 && (
+              {columns.map((time, index) => (
+                <div
+                  key={index}
+                  className='member-table-time'
+                  onClick={() => handleSelectTime(time, 24 / columnCount)}
+                >
+                  {index > 0 && (
                     <span className='member-table-time-text'>
-                      {_.padStart(start.toString(), 2, '0') + ':00'}
+                      {_.padStart(time.toString(), 2, '0') + ':00'}
                     </span>
                   )}
                 </div>
@@ -109,6 +123,7 @@ const MemberTable: React.FC<MemberTableProps> = ({ member, interval }) => {
             {days.map(day => (
               <Row
                 key={day.start.toString()}
+                week={interval}
                 day={day}
                 columnCount={columnCount}
                 selections={selections}
