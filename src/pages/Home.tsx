@@ -50,12 +50,12 @@ const Home: React.FC = () => {
                 <strong>{day}</strong> is day shift and <strong>{night}</strong> is night shift.
               </Alert>
               <Row>
-                <Col md={6}>
+                <Col md={6} className='mb-3'>
                   <Card>
                     <Card.Header>Storm and Support</Card.Header>
                   </Card>
                 </Col>
-                <Col md={6}>
+                <Col md={6} className='mb-3'>
                   <Card>
                     <Card.Header>Rescue</Card.Header>
                   </Card>
